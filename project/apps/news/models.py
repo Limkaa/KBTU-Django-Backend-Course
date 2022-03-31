@@ -2,6 +2,7 @@ from django.db import models
 
 from project.settings import COURSE_MODEL
 
+
 class News(models.Model):
     title = models.CharField(max_length=150, null=False, blank=False)
     text = models.CharField(max_length=2000, null=False, blank=False)

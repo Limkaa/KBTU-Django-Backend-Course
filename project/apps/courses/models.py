@@ -15,9 +15,10 @@ class Category(models.Model):
 
 
 class Course(models.Model):
-    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='courses')
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='own_courses')
     title = models.CharField(max_length=300, null=False, blank=False)
     description = models.CharField(max_length=2000, null=False, blank=False)
+    price = models.DecimalField(max_digits=9, decimal_places=2, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     cover_photo = models.ImageField(upload_to="courses/", null=True, blank=True)
@@ -129,8 +130,8 @@ class Review(models.Model):
     rating = models.SmallIntegerField(choices=RATING_CHOICES, default=GREAT)
     
     class Meta:
-        verbose_name = 'Comment'
-        verbose_name_plural = 'Comments'
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'
     
     def __str__(self) -> str:
         return self.text
@@ -166,3 +167,38 @@ class Wish(models.Model):
     
     def __str__(self) -> str:
         return str(self.course)
+
+
+class Progress(models.Model):
+    """
+    Track user progress (viewed lessons).
+    Uses Many to Many relationship User to Lesson
+    """
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='completed_lessons')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='users_completed')
+    completed_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Progress'
+        verbose_name_plural = 'Progress'
+    
+    def __str__(self) -> str:
+        return str(self.lesson)
+
+
+class Submission(models.Model):
+    """
+    Track user tasks submissions (completed and submitted tasks).
+    Uses Many to Many relationship User to Task
+    """
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='submitted_tasks')
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='submissions')
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = 'Submission'
+        verbose_name_plural = 'Submissions'
+    
+    def __str__(self) -> str:
+        return str(self.task)
+

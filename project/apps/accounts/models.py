@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 
 from django.contrib.auth.models import PermissionsMixin
@@ -27,11 +26,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    """ Profile with additional info for user instance (One to one) """
+    """ Profile with additional info for User instance (One to one) """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     bio = models.TextField(max_length=500, blank=True)
+    balance = models.DecimalField(max_digits=9, decimal_places=2)
     birth_date = models.DateField(null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
