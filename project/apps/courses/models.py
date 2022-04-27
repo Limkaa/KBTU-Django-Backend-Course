@@ -1,4 +1,5 @@
 from django.db import models
+from project.apps.accounts.models import Transaction
 
 from project.settings import AUTH_USER_MODEL
 
@@ -35,7 +36,6 @@ class CourseMembership(models.Model):
     """ Many to Many relationship between Course and User """
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='memberships')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='members')
-    amount_paid = models.DecimalField(max_digits=9, decimal_places=2, null=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -71,22 +71,6 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'Lesson'
         verbose_name_plural = 'Lessons'
-    
-    def __str__(self) -> str:
-        return self.title
-
-
-class Task(models.Model):
-    """ Each lesson also can include some tasks """
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='tasks')
-    title = models.CharField(max_length=300, null=False, blank=False)
-    description = models.CharField(max_length=1000, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    class Meta:
-        verbose_name = 'Task'
-        verbose_name_plural = 'Tasks'
     
     def __str__(self) -> str:
         return self.title
@@ -137,22 +121,6 @@ class Review(models.Model):
         return self.text
 
 
-class Bookmark(models.Model):
-    """ 
-    User can save lessons to favorites by using bookmarks.
-    Uses Many to Many relationship between User and Lesson. 
-    """
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookmarks')
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='in_bookmarks_of_users')
-    
-    class Meta:
-        verbose_name = 'Bookmark'
-        verbose_name_plural = 'Bookmarks'
-    
-    def __str__(self) -> str:
-        return str(self.lesson)
-
-
 class Wish(models.Model):
     """ 
     User can save courses to wishlist in order to buy them later.
@@ -167,38 +135,4 @@ class Wish(models.Model):
     
     def __str__(self) -> str:
         return str(self.course)
-
-
-class Progress(models.Model):
-    """
-    Track user progress (viewed lessons).
-    Uses Many to Many relationship User to Lesson
-    """
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='completed_lessons')
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='users_completed')
-    completed_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        verbose_name = 'Progress'
-        verbose_name_plural = 'Progress'
-    
-    def __str__(self) -> str:
-        return str(self.lesson)
-
-
-class Submission(models.Model):
-    """
-    Track user tasks submissions (completed and submitted tasks).
-    Uses Many to Many relationship User to Task
-    """
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='submitted_tasks')
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='submissions')
-    submitted_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        verbose_name = 'Submission'
-        verbose_name_plural = 'Submissions'
-    
-    def __str__(self) -> str:
-        return str(self.task)
 
