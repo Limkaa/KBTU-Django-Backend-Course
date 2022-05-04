@@ -1,0 +1,1590 @@
+{
+	"info": {
+		"_postman_id": "f9203fb0-21a3-40cd-87cc-0b87bbb366aa",
+		"name": "Django Final Project (Alim Khamraev)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "Register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"user51@gmail.com\",\n    \"password\": \"user51\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/account/register/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"account",
+										"register",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable('access-token', jsonData.access)",
+											"postman.setEnvironmentVariable('refresh-token', jsonData.refresh)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"user4@gmail.com\",\n    \"password\": \"user4\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/account/login/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"account",
+										"login",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody)",
+											"postman.setEnvironmentVariable('access-token', jsonData.access)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access-token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "refresh",
+											"value": "{{refresh-token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/account/token/refresh/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"account",
+										"token",
+										"refresh",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access-token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "{{access-token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/account/token/verify/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"account",
+										"token",
+										"verify",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Is responsible for processing registration and login of user. On success login saves token to env variable"
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "View profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access-token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/account/profile/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"account",
+										"profile",
+										""
+									]
+								},
+								"description": "View profile of current user"
+							},
+							"response": []
+						},
+						{
+							"name": "Update profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access-token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "Monica",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Lerman",
+											"type": "text"
+										},
+										{
+											"key": "bio",
+											"value": "I am a designer in huge fashion company!",
+											"type": "text"
+										},
+										{
+											"key": "avatar",
+											"type": "file",
+											"src": "/Users/apples/Desktop/Files/KBTU/course-3/semester-6/Django/KBTU-Django-Backend-Course/project/mock_data/test_profile_photos/photo-1494790108377-be9c29b29330.webp"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/account/profile/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"account",
+										"profile",
+										""
+									]
+								},
+								"description": "Update profile of current user"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "General feed views",
+					"item": [
+						{
+							"name": "Main subgroups",
+							"item": [
+								{
+									"name": "All courses",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses"
+											]
+										},
+										"description": "Allows to view all courses"
+									},
+									"response": []
+								},
+								{
+									"name": "Teaching courses",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/teaching",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"teaching"
+											]
+										},
+										"description": "Shows only that courses, which current user owns as teacher"
+									},
+									"response": []
+								},
+								{
+									"name": "Learning courses",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/learning",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"learning"
+											]
+										},
+										"description": "Shows courses, which are learned by user"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Categories",
+							"item": [
+								{
+									"name": "All categories",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/categories",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"categories"
+											]
+										},
+										"description": "View all available categories of courses"
+									},
+									"response": []
+								},
+								{
+									"name": "Courses of category",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/categories/4",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"categories",
+												"4"
+											]
+										},
+										"description": "Returns courses of specific category"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Courses teachers",
+							"item": [
+								{
+									"name": "All teachers",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/teachers?limit=10&offset=0",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"teachers"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "10"
+												},
+												{
+													"key": "offset",
+													"value": "0"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Teacher details",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/teachers/5",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"teachers",
+												"5"
+											]
+										},
+										"description": "View teacher profile and his courses"
+									},
+									"response": []
+								}
+							],
+							"description": "Returns all users, who own 1 or more courses"
+						}
+					]
+				},
+				{
+					"name": "Course item",
+					"item": [
+						{
+							"name": "Lessons",
+							"item": [
+								{
+									"name": "All lessons",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/13/lessons",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"13",
+												"lessons"
+											]
+										},
+										"description": "All lessons of specific course"
+									},
+									"response": []
+								},
+								{
+									"name": "Lesson details",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/18/lessons/270/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"18",
+												"lessons",
+												"270",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create lesson",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "Lesson 6",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Somthing 6",
+													"type": "text"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/9/lessons/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"9",
+												"lessons",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Update lesson",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "It is first lesson",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Introduction to WEB",
+													"type": "text"
+												},
+												{
+													"key": "videolink",
+													"value": "https://youtu.be/",
+													"type": "text"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/18/lessons/270/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"18",
+												"lessons",
+												"270",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete lesson",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/13/lessons/195/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"13",
+												"lessons",
+												"195",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Comments",
+							"item": [
+								{
+									"name": "Lesson comments",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/9/lessons/5/comments/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"9",
+												"lessons",
+												"5",
+												"comments",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Comment details",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/lessons/1/comments/1/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"lessons",
+												"1",
+												"comments",
+												"1",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create comment",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"text\": \"Very interesting!\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/lessons/1/comments/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"lessons",
+												"1",
+												"comments",
+												""
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Update comment",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"text\": \"It is new comment text\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/lessons/1/comments/1/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"lessons",
+												"1",
+												"comments",
+												"1",
+												""
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete comment",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/9/lessons/6/comments/2",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"9",
+												"lessons",
+												"6",
+												"comments",
+												"2"
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								}
+							],
+							"description": "Provides methods for work with comments of lessons"
+						},
+						{
+							"name": "Bookmarks",
+							"item": [
+								{
+									"name": "All bookmarks",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/lessons/bookmarks/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"lessons",
+												"bookmarks",
+												""
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Create bookmark",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/lessons/2/bookmark/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"lessons",
+												"2",
+												"bookmark",
+												""
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete bookmark",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/lessons/4/bookmark/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"lessons",
+												"4",
+												"bookmark",
+												""
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								}
+							],
+							"description": "Allows users to create bookmarks of specific course lessons"
+						},
+						{
+							"name": "Tasks",
+							"item": [
+								{
+									"name": "Lesson tasks",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/19/lessons/4/tasks/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"19",
+												"lessons",
+												"4",
+												"tasks",
+												""
+											]
+										},
+										"description": "Only course teacher and students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Task detail",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/1/lessons/3/tasks/3",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"1",
+												"lessons",
+												"3",
+												"tasks",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create task",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "New title",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "New description",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/1/lessons/3/tasks/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"1",
+												"lessons",
+												"3",
+												"tasks",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Update task",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "New title",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "New description",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/1/lessons/3/tasks/3",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"1",
+												"lessons",
+												"3",
+												"tasks",
+												"3"
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Partial update task",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "Do something easy",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Something important new",
+													"type": "text",
+													"disabled": true
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/1/lessons/3/tasks/3",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"1",
+												"lessons",
+												"3",
+												"tasks",
+												"3"
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete task",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/1/lessons/3/tasks/4",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"1",
+												"lessons",
+												"3",
+												"tasks",
+												"4"
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								}
+							],
+							"description": "Allows to work with tasks of courses"
+						},
+						{
+							"name": "Reviews",
+							"item": [
+								{
+									"name": "Course reviews",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/reviews/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"reviews",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Review detail",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/reviews/5/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"reviews",
+												"5",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create review",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "text",
+													"value": "This is good",
+													"type": "text"
+												},
+												{
+													"key": "rating",
+													"value": "4",
+													"type": "text"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/reviews/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"reviews",
+												""
+											]
+										},
+										"description": "Only course students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Update review",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "text",
+													"value": "I'm not sure is it good or no",
+													"type": "text"
+												},
+												{
+													"key": "rating",
+													"value": "3",
+													"type": "text"
+												}
+											],
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/reviews/5/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"reviews",
+												"5",
+												""
+											]
+										},
+										"description": "Only course students have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete review",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/reviews/5/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"reviews",
+												"5",
+												""
+											]
+										},
+										"description": "Only course students have access to that action"
+									},
+									"response": []
+								}
+							],
+							"description": "Allows to work with reviews of courses"
+						},
+						{
+							"name": "News",
+							"item": [
+								{
+									"name": "Course news",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/30/news/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"30",
+												"news",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "News detail",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/courses/2/news/83",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"2",
+												"news",
+												"83"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create news",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"title\": \"News 1 title\",\n    \"text\": \"Some information\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/9/news/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"9",
+												"news",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Update news",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"title\": \"New title\",\n    \"text\": \"I'm not sure is it good or no\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/news/8/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"news",
+												"8",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete news",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/courses/4/news/6/",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"courses",
+												"4",
+												"news",
+												"6",
+												""
+											]
+										},
+										"description": "Only course teacher have access to that action"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Course details",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"Web Development Course 2022\",\n    \"description\":\"Here we learn HTML, CSS, JavaScript\",\n    \"categories\":[1,2]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/courses/1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"courses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Course students",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"Web Development Course 2022\",\n    \"description\":\"Here we learn HTML, CSS, JavaScript\",\n    \"categories\":[1,2]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/courses/9/students/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"courses",
+										"9",
+										"students",
+										""
+									]
+								},
+								"description": "Only course teacher have access to that action"
+							},
+							"response": []
+						},
+						{
+							"name": "Create course",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"3D Design Bootcamp 2021\",\n    \"description\":\"Something important about course\",\n    \"category_id\": 4\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/courses/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"courses",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update course",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Something new in 2022",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Something important about course",
+											"type": "text"
+										},
+										{
+											"key": "category_id",
+											"value": "15",
+											"type": "text"
+										},
+										{
+											"key": "cover_photo",
+											"type": "file",
+											"src": "/Users/apples/Desktop/Files/KBTU/course-3/semester-6/Django/KBTU-Django-Backend-Course/project/mock_data/test_course_cover_photos/online-tutorials-and-training-illustration-scaled-1.jpg"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/courses/18/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"courses",
+										"18",
+										""
+									]
+								},
+								"description": "Only course teacher have access to that action"
+							},
+							"response": []
+						},
+						{
+							"name": "Register on course",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/courses/3/learn/",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"courses",
+										"3",
+										"learn",
+										""
+									]
+								},
+								"description": "All, but not course teacher and students, have access to that action"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access-token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://127.0.0.1:8000/api/"
+		}
+	]
+}
