@@ -7,27 +7,27 @@
 The first thing to do is to clone the repository:
 
 ```sh
-$ git clone https://github.com/gocardless/sample-django-app.git
-$ cd sample-django-app
+$ git clone https://github.com/Limkaa/KBTU-Django-Backend-Course.git
+$ cd KBTU-Django-Backend-Course
 ```
 
 Create a virtual environment to install dependencies in and activate it:
 
 ```sh
-$ virtualenv2 --no-site-packages env
+$ virtualenv --no-site-packages env
 $ source env/bin/activate
 ```
 
 Then install the dependencies:
 
 ```sh
-(env)$ pip install -r requirements.txt
+(env)$ pip3 install -r requirements.txt
 ```
 
 Note the `(env)` in front of the prompt. This indicates that this terminal
-session operates in a virtual environment set up by `virtualenv2`.
+session operates in a virtual environment set up by `virtualenv`.
 
-Once `pip` has finished downloading the dependencies:
+Once `pip3` has finished downloading the dependencies:
 
 ```sh
 (env)$ cd project

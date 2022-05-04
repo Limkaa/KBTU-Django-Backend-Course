@@ -274,12 +274,7 @@
 											"type": "file",
 											"src": "/Users/apples/Desktop/Files/KBTU/course-3/semester-6/Django/KBTU-Django-Backend-Course/project/mock_data/test_profile_photos/photo-1494790108377-be9c29b29330.webp"
 										}
-									],
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/account/profile/",
@@ -550,12 +545,7 @@
 													"value": "Somthing 6",
 													"type": "text"
 												}
-											],
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											]
 										},
 										"url": {
 											"raw": "{{BASE_URL}}/courses/9/lessons/",
@@ -596,12 +586,7 @@
 													"value": "https://youtu.be/",
 													"type": "text"
 												}
-											],
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											]
 										},
 										"url": {
 											"raw": "{{BASE_URL}}/courses/18/lessons/270/",
@@ -1021,12 +1006,7 @@
 													"type": "text",
 													"disabled": true
 												}
-											],
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											]
 										},
 										"url": {
 											"raw": "{{BASE_URL}}/courses/1/lessons/3/tasks/3",
@@ -1137,12 +1117,7 @@
 													"value": "4",
 													"type": "text"
 												}
-											],
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											]
 										},
 										"url": {
 											"raw": "{{BASE_URL}}/courses/4/reviews/",
@@ -1178,12 +1153,7 @@
 													"value": "3",
 													"type": "text"
 												}
-											],
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
+											]
 										},
 										"url": {
 											"raw": "{{BASE_URL}}/courses/4/reviews/5/",
@@ -1494,12 +1464,7 @@
 											"type": "file",
 											"src": "/Users/apples/Desktop/Files/KBTU/course-3/semester-6/Django/KBTU-Django-Backend-Course/project/mock_data/test_course_cover_photos/online-tutorials-and-training-illustration-scaled-1.jpg"
 										}
-									],
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
+									]
 								},
 								"url": {
 									"raw": "{{BASE_URL}}/courses/18/",
