@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-
+from django.db import models
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -34,4 +34,9 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        return self.create_staffuser(email, password, **extra_fields)
+
+
+class ProfileManager(models.Manager):
+    def teachers(self):
+        return self.annotate(total_courses_num=models.Count('user__own_courses')).filter(total_courses_num__gt = 0)

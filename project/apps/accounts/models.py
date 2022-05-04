@@ -3,8 +3,8 @@ from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 
-from .managers import UserManager, TransactionManager
-
+from .managers import ProfileManager, UserManager
+from .utils import avatarFilePath
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, blank=False)
@@ -28,47 +28,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     """ Profile with additional info for User instance (One to one) """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=30, blank=True)
-    bio = models.TextField(max_length=500, blank=True)
-    balance = models.PositiveIntegerField(default=0)
-    birth_date = models.DateField(null=True, blank=True)
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    first_name = models.CharField(max_length=30, null=True, blank=True)
+    last_name = models.CharField(max_length=30, null=True, blank=True)
+    bio = models.TextField(max_length=500, null=True, blank=True)
+    avatar = models.ImageField(upload_to=avatarFilePath, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    objects = ProfileManager()
     
     class Meta:
         verbose_name = 'Profile'
         verbose_name_plural = 'Profiles'
     
+    def save(self, *args, **kwargs) -> None:
+        try:
+            this = Profile.objects.get(id=self.id)
+            if this.avatar:
+                this.avatar.delete()
+        except:
+            pass
+        super(Profile, self).save(*args, **kwargs)
+    
     def __str__(self) -> str:
         return str(self.user)
-
-
-class Transaction(models.Model):
-    """ Each user can make deposit or withdrawal managing account balance"""
-    
-    DEPOSIT = "DPST"
-    WITHDRAWAL = "WDRL"
-    SALE = "SALE"
-    PAYMENT = "PAYM"
-    
-    TYPE_CHOICES = [
-        (DEPOSIT, 'Deposit'),
-        (WITHDRAWAL, 'Withdrawal'),
-        (SALE, 'Sale'),
-        (PAYMENT, 'Payment')
-    ]
-    
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transactions')
-    amount = models.PositiveIntegerField()
-    type = models.CharField(max_length=4, choices=TYPE_CHOICES, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    objects = TransactionManager()
-    
-    class Meta:
-        verbose_name = 'Transaction'
-        verbose_name_plural = 'Transactions'
-    
-    def __str__(self) -> str:
-        return f"{self.amount} ({self.type})"
